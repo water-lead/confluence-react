@@ -1,13 +1,17 @@
 {
   "files": {
-    "main.js": "/confluence-react/static/js/main.ddacd240.chunk.js",
-    "main.js.map": "/confluence-react/static/js/main.ddacd240.chunk.js.map",
+    "main.css": "/confluence-react/static/css/main.afd7172b.chunk.css",
+    "main.js": "/confluence-react/static/js/main.1ef5b9b4.chunk.js",
+    "main.js.map": "/confluence-react/static/js/main.1ef5b9b4.chunk.js.map",
     "runtime-main.js": "/confluence-react/static/js/runtime-main.b6add69a.js",
     "runtime-main.js.map": "/confluence-react/static/js/runtime-main.b6add69a.js.map",
-    "index.html": "/confluence-react/index.html"
+    "index.html": "/confluence-react/index.html",
+    "static/css/main.afd7172b.chunk.css.map": "/confluence-react/static/css/main.afd7172b.chunk.css.map",
+    "static/js/main.1ef5b9b4.chunk.js.LICENSE.txt": "/confluence-react/static/js/main.1ef5b9b4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b6add69a.js",
-    "static/js/main.ddacd240.chunk.js"
+    "static/css/main.afd7172b.chunk.css",
+    "static/js/main.1ef5b9b4.chunk.js"
   ]
 }
