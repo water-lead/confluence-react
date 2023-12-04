@@ -1,0 +1,214 @@
+body {
+  font-family: "Syncopate", sans-serif;
+  margin: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Styles for the video container */
+#studio-video-bg-desktop {
+  position: fixed; /* Fixed position to cover the viewport */
+  top: 0;
+  left: 0;
+  object-fit: cover; /* Cover the entire viewport */
+  min-width: 100%; /* Minimum width of 100% */
+  min-height: 100%;
+  max-width: 100%;
+  max-height: 100%; /* Minimum height of 100% */
+  width: 100vw;
+  height: 100vw;
+  z-index: -1; /* Behind all other content */
+}
+
+/* Logo styles */
+.menu {
+  display: flex;
+  position: fixed;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1.5vw 2vw; /* Responsive padding */
+  background-color: transparent;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.logo {
+  position: fixed;
+  top: 1.5vw; /* Responsive padding */
+  left: 1.5vw; /* Responsive padding */
+  z-index: 10;
+}
+
+/* Use a class for logo image if it's in the HTML */
+.logo img {
+  width: 5vw; /* Responsive width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Content styles for studio page page sections */
+.centered {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Landing Page styling */
+.page-section {
+  position: absolute;
+  bottom: 43%;
+  left: 50%;
+  transform: translate(-50%);
+  text-align: left;
+  max-width: 600px;
+  padding: 5px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3vh 10vw;
+}
+
+.page-section .description {
+  font-weight: regular;
+  padding: 3vh 10vw;
+  align-items: center;
+  justify-content: center;
+  font-family: "Syncopate", sans-serif;
+}
+
+/* Button styling */
+input {
+  max-width: 400px;
+  top: 55%;
+  left: 50%;
+  padding: 1.5vw 1.5vh;
+  width: 100vw;
+  margin-bottom: 10px;
+  border: 2px solid #4d72a0;
+  border-radius: 40px;
+  font-family: "Syncopate", sans-serif;
+  display: flex;
+  font-size: 20px;
+  align-items: left;
+}
+
+form {
+  max-width: 400px;
+  top: 55%;
+  left: 50%;
+  width: 100vw;
+  margin-bottom: 10px;
+  border: 2px solid #4d72a0;
+  border-radius: 40px;
+  font-family: "Syncopate", sans-serif;
+  display: flex;
+  padding: 1.5vw 1.5vh;
+  font-size: 20px;
+  align-items: left;
+  justify-content: center;
+}
+
+button {
+  max-width: 400px;
+  top: 55%;
+  left: 50%;
+  padding: 1.5vw 1.5vh;
+  width: 100vw;
+  background-color: #538bc3;
+  color: #fff;
+  border: 2px solid #ffffff;
+  border-radius: 40px;
+  cursor: pointer;
+  font-family: "Syncopate", sans-serif;
+  display: inline-flex;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5vw;
+}
+
+/* Heading styles for studio page page sections */
+.page-section h1 {
+  font-family: "Aclonica", sans-serif;
+  font-size: 20px;
+  color: #ffffff;
+}
+@media (max-width: 768px) {
+  .page-section h1 {
+    font-family: "Aclonica", sans-serif;
+    font-size: 20px;
+    color: #ffffff;
+  }
+}
+
+#first-studio-display {
+  display: block;
+}
+
+#enter-industries {
+  display: none;
+}
+
+#congrats-view {
+  display: none;
+}
+
+#analyse-view {
+  display: none;
+}
+
+#init-analyse {
+  display: none;
+}
+
+#enter {
+  font-size: 28px;
+  font-family: "Aclonica", sans-serif;
+}
+
+#industry2 {
+  display: flex;
+  margin-left: 25%;
+}
+
+#skip {
+  display: none;
+}
+
+#idea1 {
+  display: none;
+  margin-left: 25%;
+}
+
+#idea2 {
+  display: none;
+  margin-left: 25%;
+}
+#idea3 {
+  display: none;
+  margin-left: 25%;
+}
+#idea4 {
+  display: none;
+  margin-left: 25%;
+}
+#idea5 {
+  display: none;
+  margin-left: 25%;
+}
+
+#industries-div {
+  display: none;
+}
+
+#industry1 {
+  display: none;
+  margin-left: 25%;
+}
+
+#download-button {
+  display: none;
+  /* ...other styles... */
+}
