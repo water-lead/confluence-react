@@ -59,7 +59,7 @@ const Studio = () => {
     page.setFont(headerFont);
     page.setFontSize(24);
     page.drawText("Confluence Studio Results", {
-      x: (width - headerFont.widthOfTextAtSize(headerText, fontSize)) / 2,
+      x: 50,
       y: height - 50,
       color: rgb(0, 0, 0),
     });
@@ -133,7 +133,7 @@ const Studio = () => {
 
       const fontSize = 12;
       page.drawText(JSON.stringify(data.response, null, 2), {
-        x: (width - headerFont.widthOfTextAtSize(headerText, fontSize)) / 2,
+        x: 50,
         y: height - 4 * fontSize,
         size: fontSize,
       });
