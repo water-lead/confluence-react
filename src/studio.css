@@ -70,12 +70,16 @@ body {
   padding: 3vh 10vw;
 }
 
-.page-section .description {
+#description {
+  margin-top: 100px;
+  width: 100%;
   font-weight: regular;
-  padding: 3vh 10vw;
   align-items: center;
   justify-content: center;
   font-family: "Syncopate", sans-serif;
+  margin-bottom: 10px;
+  line-height: 150%;
+  font-weight: 500;
 }
 
 /* Button styling */
@@ -149,18 +153,31 @@ button {
 
 #enter-industries {
   display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #congrats-view {
   display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #analyse-view {
   display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 #init-analyse {
   display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #enter {
@@ -170,7 +187,6 @@ button {
 
 #industry2 {
   display: flex;
-  margin-left: 25%;
 }
 
 #skip {
@@ -179,24 +195,19 @@ button {
 
 #idea1 {
   display: none;
-  margin-left: 25%;
 }
 
 #idea2 {
   display: none;
-  margin-left: 25%;
 }
 #idea3 {
   display: none;
-  margin-left: 25%;
 }
 #idea4 {
   display: none;
-  margin-left: 25%;
 }
 #idea5 {
   display: none;
-  margin-left: 25%;
 }
 
 #industries-div {
@@ -205,7 +216,6 @@ button {
 
 #industry1 {
   display: none;
-  margin-left: 25%;
 }
 
 #download-button {

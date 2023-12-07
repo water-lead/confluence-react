@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css"; // Import your styles
 import BackgroundVid from "./Assets/background-video.mp4";
 import Logo from "./Assets/Logo.png";
 import { useNavigate } from "react-router-dom";
+import { setGlobalAccess } from "./features/authSlice";
+import { useDispatch } from "react-redux";
 
 const App = () => {
-  const [requestBody, setRequestBody] = useState({});
+  const [requestBody, setRequestBody] = useState({
+    email: "",
+    password: "",
+  });
   const [notification, setNotification] = useState("");
+  const [access, setAccess] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  //for updating the global state
+  useEffect(() => {
+    if (access) {
+      dispatch(setGlobalAccess(access));
+    }
+  }, [dispatch, access]);
 
   function showEmailInput() {
     document.getElementById("loginButton").style.display = "none";
@@ -17,61 +31,43 @@ const App = () => {
   }
 
   function showPasswordInput() {
-    return new Promise((resolve) => {
-      requestBody.email = document.getElementById("loginEmail").value;
-      document.getElementById("emailInput").style.display = "none";
-      document.getElementById("passwordInput").style.display = "block";
-      document.getElementById("loginPassword").focus();
-      resolve();
-    });
+    document.getElementById("emailInput").style.display = "none";
+    document.getElementById("passwordInput").style.display = "block";
+    document.getElementById("loginPassword").focus();
   }
 
   async function submitLoginForm() {
-    await showPasswordInput(); // Wait for showPasswordInput to complete before proceeding
-
-    requestBody.password = document.getElementById("loginPassword").value;
-
     try {
-      const response = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "https://confluence-auth-8d9d6.uc.r.appspot.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       const data = await response.json();
 
       if (data.success) {
+        setAccess(true);
         navigate("/studio");
       } else {
+        setAccess(false);
         const notification = document.getElementById("notification");
         notification.style.display = "block";
         notification.innerText = "Incorrect login details. Please try again.";
       }
     } catch (error) {
+      setAccess(false);
       console.error("Error:", error);
       const notification = document.getElementById("notification");
       notification.style.display = "block";
       notification.innerText = "You may not have access, please contact us.";
     }
   }
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      if (document.getElementById("loginButton").style.display === "block") {
-        showEmailInput();
-      } else if (
-        document.getElementById("emailInput").style.display === "block"
-      ) {
-        showPasswordInput();
-      } else if (
-        document.getElementById("passwordInput").style.display === "block"
-      ) {
-        submitLoginForm();
-      }
-    }
-  });
 
   return (
     <div>
@@ -104,24 +100,46 @@ const App = () => {
               </div>
               <div id="emailInput" style={{ display: "none" }}>
                 <input
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      showPasswordInput();
+                    }
+                  }}
                   type="text"
                   id="loginEmail"
                   placeholder="E-mail Address"
+                  onChange={(e) => {
+                    setRequestBody((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }));
+                  }}
                 />
               </div>
               <div id="passwordInput" style={{ display: "none" }}>
                 <input
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      submitLoginForm();
+                    }
+                  }}
                   type="password"
                   id="loginPassword"
                   placeholder="Password"
+                  onChange={(e) => {
+                    setRequestBody((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }));
+                  }}
                 />
-              </div>
-              <div className="notification" id="notification">
-                {notification && <p>{notification}</p>}
               </div>
             </div>
           </div>
         </section>
+      </div>
+      <div className="notification" id="notification">
+        {notification && <p>{notification}</p>}
       </div>
     </div>
   );

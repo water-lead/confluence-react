@@ -171,10 +171,13 @@ button {
 }
 
 .notification {
-  top: 60%;
-  left: 50%;
+  position: absolute;
+  left: 33%;
+  top: 64%;
+  display: flex;
   margin-top: 10px;
-  color: #538bc3;
+  color: #16314b;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {

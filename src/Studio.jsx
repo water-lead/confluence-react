@@ -3,87 +3,34 @@ import "./studio.css";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import StudioVideo from "./Assets/studio-video.mp4";
 import Logo from "./Assets/Logo.png";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Studio = () => {
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth.authAccess);
+
+  useEffect(() => {
+    if (!auth) {
+      navigate("/");
+    }
+  }, [auth, navigate]);
+
   const showIndustryInput1 = () => {
     document.getElementById("first-studio-display").style.display = "none";
-    document.getElementById("enter-industries").style.display = "block";
+    document.getElementById("enter-industries").style.display = "flex";
     document.getElementById("init-analyse").style.display = "none";
-    document.getElementById("industry1").style.display = "block";
+    document.getElementById("industry1").style.display = "flex";
     document.getElementById("industry2").style.display = "none";
     document.getElementById("industry1").focus();
   };
 
   const showIdeaInput1 = () => {
     document.getElementById("congrats-view").style.display = "none";
-    document.getElementById("init-analyse").style.display = "block";
+    document.getElementById("init-analyse").style.display = "flex";
     document.getElementById("analyse-view").style.display = "none";
-    document.getElementById("idea1").style.display = "block";
+    document.getElementById("idea1").style.display = "flex";
     document.getElementById("idea1").focus();
-  };
-
-  const runEngine = async () => {
-    const industry1 = document.getElementById("industry1").value;
-    const industry2 = document.getElementById("industry2").value;
-    const idea1 = document.getElementById("idea1").value;
-    const idea2 = document.getElementById("idea2").value;
-    const idea3 = document.getElementById("idea3").value;
-    const idea4 = document.getElementById("idea4").value;
-    const idea5 = document.getElementById("idea5").value;
-
-    const payload = {
-      industry1: industry1,
-      industry2: industry2,
-      idea1: idea1,
-      idea2: idea2,
-      idea3: idea3,
-      idea4: idea4,
-      idea5: idea5,
-    };
-
-    const apiKey = "AIzaSyAoGe-Pa28bY35fthe2eMSNBz9_69Hy2b8";
-    const apiUrl =
-      "https://confluence-auth-8d9d6.uc.r.appspot.com/confluence-analyze";
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      const { PDFDocument } = PDFDocument;
-      const pdfDoc = await PDFDocument.create();
-
-      const page = pdfDoc.addPage();
-      const { width, height } = page.getSize();
-
-      const fontSize = 12;
-      page.drawText(JSON.stringify(data.response, null, 2), {
-        x: 50,
-        y: height - 4 * fontSize,
-        size: fontSize,
-      });
-
-      const pdfBytes = await pdfDoc.save();
-
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
-      const link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = "Confluence-Output.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      sessionStorage.setItem("pdfData", JSON.stringify(data.response));
-      document.getElementById("download-button").style.display = "block";
-    } catch (error) {
-      console.error("Error:", error);
-    }
   };
 
   const createAndDownloadPDF = async () => {
@@ -101,7 +48,6 @@ const Studio = () => {
       return;
     }
 
-    const { PDFDocument, StandardFonts, rgb } = PDFDocument;
     const pdfDoc = await PDFDocument.create();
 
     const headerFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
@@ -147,109 +93,67 @@ const Studio = () => {
     document.body.removeChild(link);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "ArrowRight") {
-      if (
-        document.getElementById("enter-industries").style.display === "block" &&
-        document.getElementById("industry2").style.display === "block"
-      ) {
-        document.getElementById("enter-industries").style.display = "none";
-        document.getElementById("congrats-view").style.display = "block";
-        document.getElementById("analyse-view").style.display = "none";
-      }
-    }
+  const runEngine = async () => {
+    const industry1 = document.getElementById("industry1").value;
+    const industry2 = document.getElementById("industry2").value;
+    const idea1 = document.getElementById("idea1").value;
+    const idea2 = document.getElementById("idea2").value;
+    const idea3 = document.getElementById("idea3").value;
+    const idea4 = document.getElementById("idea4").value;
+    const idea5 = document.getElementById("idea5").value;
 
-    if (event.key === "ArrowRight") {
-      if (
-        document.getElementById("init-analyse").style.display === "block" &&
-        document.getElementById("idea1").style.display === "none" &&
-        document.getElementById("idea2").style.display === "none"
-      ) {
-        if (document.getElementById("idea3").style.display === "block") {
-          document.getElementById("idea3").style.display = "none";
-          document.getElementById("idea4").style.display = "none";
-        } else if (document.getElementById("idea4").style.display === "block") {
-          document.getElementById("idea4").style.display = "none";
-          document.getElementById("idea5").style.display = "block";
-          document.getElementById("analyse-view").style.display = "none";
-        } else if (document.getElementById("idea5").style.display === "block") {
-          document.getElementById("idea5").style.display = "none";
-          document.getElementById("analyse-view").style.display = "none";
-        }
-      }
-    }
+    const payload = {
+      industry1: industry1,
+      industry2: industry2,
+      idea1: idea1,
+      idea2: idea2,
+      idea3: idea3,
+      idea4: idea4,
+      idea5: idea5,
+    };
 
-    if (event.key === "Enter") {
-      const industry1Value = document.getElementById("industry1").value;
-      const industry2Value = document.getElementById("industry2").value;
+    const apiUrl =
+      "https://confluence-auth-8d9d6.uc.r.appspot.com/confluence-analyze";
 
-      const idea1 = document.getElementById("idea1").value;
-      const idea2 = document.getElementById("idea2").value;
-      const idea3 = document.getElementById("idea3").value;
-      const idea4 = document.getElementById("idea4").value;
-      const idea5 = document.getElementById("idea5").value;
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      if (
-        industry1Value &&
-        document.getElementById("enter-industries").style.display === "block"
-      ) {
-        document.getElementById("industry1").style.display = "none";
-        document.getElementById("industry2").style.display = "block";
-        document.getElementById("industry2").focus();
-      }
+      const data = await response.json();
 
-      if (
-        industry2Value &&
-        document.getElementById("enter-industries").style.display === "block"
-      ) {
-        document.getElementById("enter-industries").style.display = "none";
-        document.getElementById("congrats-view").style.display = "block";
-        document.getElementById("analyse-view").style.display = "none";
-      }
+      const pdfDoc = await PDFDocument.create();
 
-      if (
-        idea1 &&
-        document.getElementById("init-analyse").style.display === "block"
-      ) {
-        document.getElementById("idea1").style.display = "none";
-        document.getElementById("idea2").style.display = "block";
-        document.getElementById("analyse-view").style.display = "none";
-        document.getElementById("idea2").focus();
-      }
+      const page = pdfDoc.addPage();
+      const { width, height } = page.getSize();
 
-      if (
-        idea2 &&
-        document.getElementById("init-analyse").style.display === "block"
-      ) {
-        document.getElementById("idea2").style.display = "none";
-        document.getElementById("idea3").style.display = "block";
-        document.getElementById("analyse-view").style.display = "none";
-      }
+      const fontSize = 12;
+      page.drawText(JSON.stringify(data.response, null, 2), {
+        x: (width - headerFont.widthOfTextAtSize(headerText, fontSize)) / 2,
+        y: height - 4 * fontSize,
+        size: fontSize,
+      });
 
-      if (
-        idea3 &&
-        document.getElementById("init-analyse").style.display === "block"
-      ) {
-        document.getElementById("idea3").style.display = "none";
-        document.getElementById("idea4").style.display = "none";
-        document.getElementById("analyse-view").style.display = "block";
-        if (
-          idea4 &&
-          document.getElementById("init-analyse").style.display === "block"
-        ) {
-          document.getElementById("idea4").style.display = "none";
-          document.getElementById("idea5").style.display = "none";
-        }
-      }
+      const pdfBytes = await pdfDoc.save();
+
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "Confluence-Output.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      sessionStorage.setItem("pdfData", JSON.stringify(data.response));
+      document.getElementById("download-button").style.display = "flex";
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   return (
     <html lang="en">
@@ -314,11 +218,45 @@ const Studio = () => {
                   <p id="enter">Enter the industries you want to analyze:</p>
                   <div>
                     <input
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          if (
+                            document.getElementById("industry1").value &&
+                            document.getElementById("enter-industries").style
+                              .display === "flex"
+                          ) {
+                            document.getElementById("industry1").style.display =
+                              "none";
+                            document.getElementById("industry2").style.display =
+                              "flex";
+                            document.getElementById("industry2").focus();
+                          }
+                        }
+                      }}
                       type="text"
                       id="industry1"
                       placeholder="Ex: Travel"
                     />
                     <input
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          if (
+                            document.getElementById("industry2").value &&
+                            document.getElementById("enter-industries").style
+                              .display === "flex"
+                          ) {
+                            document.getElementById(
+                              "enter-industries"
+                            ).style.display = "none";
+                            document.getElementById(
+                              "congrats-view"
+                            ).style.display = "flex";
+                            document.getElementById(
+                              "analyse-view"
+                            ).style.display = "none";
+                          }
+                        }
+                      }}
                       type="text"
                       id="industry2"
                       placeholder="Ex: Clothing"
@@ -334,16 +272,186 @@ const Studio = () => {
                 </div>
 
                 <div id="init-analyse">
-                  <p className="description">
+                  <div id="description">
                     We have captured the focus industries, next, we need to
                     fine-tune our engine with specific concepts/ideas. You are
                     required to enter at least two.
-                  </p>
-                  <input type="text" id="idea1" placeholder="Ex: Travel" />
-                  <input type="text" id="idea2" placeholder="Ex: Idea2" />
-                  <input type="text" id="idea3" placeholder="Ex: Idea3" />
-                  <input type="text" id="idea4" placeholder="Ex: Idea4" />
-                  <input type="text" id="idea5" placeholder="Ex: Idea5" />
+                  </div>
+                  <input
+                    type="text"
+                    id="idea1"
+                    placeholder="Ex: Travel"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        if (
+                          document.getElementById("idea1").value &&
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea1").style.display =
+                            "none";
+                          document.getElementById("idea2").style.display =
+                            "flex";
+                          document.getElementById(
+                            "analyse-view"
+                          ).style.display = "none";
+                          document.getElementById("idea2").focus();
+                        }
+                      }
+                    }}
+                  />
+                  <input
+                    type="text"
+                    id="idea2"
+                    placeholder="Ex: Idea2"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        if (
+                          document.getElementById("idea2").value &&
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea2").style.display =
+                            "none";
+                          document.getElementById("idea3").style.display =
+                            "flex";
+                          document.getElementById(
+                            "analyse-view"
+                          ).style.display = "none";
+                          document.getElementById("idea3").focus();
+                        }
+                      }
+                    }}
+                  />
+                  <input
+                    type="text"
+                    id="idea3"
+                    placeholder="Ex: Idea3"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        if (
+                          document.getElementById("idea3").value &&
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea3").style.display =
+                            "none";
+                          document.getElementById("idea4").style.display =
+                            "flex";
+                          document.getElementById("idea4").focus();
+                        }
+                      }
+
+                      if (event.key === "ArrowRight") {
+                        if (
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea3").style.display =
+                            "none";
+                          document.getElementById("idea4").style.display =
+                            "flex";
+                          document.getElementById("idea4").focus();
+                        }
+                      }
+                    }}
+                  />
+                  <input
+                    type="text"
+                    id="idea4"
+                    placeholder="Ex: Idea4"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        if (
+                          document.getElementById("idea4").value &&
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea4").style.display =
+                            "none";
+                          document.getElementById("idea5").style.display =
+                            "flex";
+                          document.getElementById("idea5").focus();
+                        }
+                      }
+
+                      if (event.key === "ArrowRight") {
+                        if (
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea4").style.display =
+                            "none";
+                          document.getElementById("idea5").style.display =
+                            "flex";
+                          document.getElementById("idea5").focus();
+                        }
+                      }
+
+                      if (event.key === "ArrowLeft") {
+                        if (
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea4").style.display =
+                            "none";
+                          document.getElementById("idea3").style.display =
+                            "flex";
+                          document.getElementById("idea3").focus();
+                        }
+                      }
+                    }}
+                  />
+                  <input
+                    type="text"
+                    id="idea5"
+                    placeholder="Ex: Idea5"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        if (
+                          document.getElementById("idea5").value &&
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("description").style.display =
+                            "none";
+                          document.getElementById("idea5").style.display =
+                            "none";
+                          document.getElementById(
+                            "analyse-view"
+                          ).style.display = "flex";
+                        }
+                      }
+
+                      if (event.key === "ArrowRight") {
+                        if (
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("description").style.display =
+                            "none";
+                          document.getElementById("idea5").style.display =
+                            "none";
+                          document.getElementById(
+                            "analyse-view"
+                          ).style.display = "flex";
+                        }
+                      }
+
+                      if (event.key === "ArrowLeft") {
+                        if (
+                          document.getElementById("init-analyse").style
+                            .display === "flex"
+                        ) {
+                          document.getElementById("idea5").style.display =
+                            "none";
+                          document.getElementById("idea4").style.display =
+                            "flex";
+                          document.getElementById("idea4").focus();
+                        }
+                      }
+                    }}
+                  />
                 </div>
 
                 <div id="analyse-view">
@@ -365,9 +473,6 @@ const Studio = () => {
             </div>
           </section>
         </div>
-
-        <script src="https://unpkg.com/pdf-lib@latest/dist/pdf-lib.min.js"></script>
-        <script src="studioScript.js"></script>
       </body>
     </html>
   );
